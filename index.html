@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="assets/css/index.css">
+    <script src="assets/js/index.js" defer></script>
+    <title>Time Calculator</title>
+</head>
+<body>
+    <div class="calculator-container">
+        <span class="screen-display">0</span>
+
+        <table class="calculator-buttons">
+            <!-- First Row -->
+            <tr>
+                <td data-clear-all>C</td>
+                <td data-delete>&#60;</td>
+                <td data-operator="x">x</td>
+                <td data-operator="&#247;">&#247;</td>
+            </tr>
+            <!-- Second Row -->
+            <tr>
+                <td data-number="7">7</td>
+                <td data-number="8">8</td>
+                <td data-number="9">9</td>
+                <td data-operator="-">-</td>
+            </tr>
+            <!-- Third Row -->
+            <tr>
+                <td data-number="4">4</td>
+                <td data-number="5">5</td>
+                <td data-number="6">6</td>
+                <td data-operator="+">+</td>
+            </tr>
+            <!-- Fourth Row -->
+            <tr>
+                <td data-number="1">1</td>
+                <td data-number="2">2</td>
+                <td data-number="3">3</td>
+                <td data-equal rowspan="2">=</td>
+            </tr>
+            <!-- Fifth Row -->
+            <tr>
+                <td data-number="0" colspan="2">0</td>
+                <td data-number=".">.</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
