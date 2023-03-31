@@ -27,6 +27,7 @@ body{
     height: 7vh;
     margin: 0 0.5vw;
     padding-right: 6px;
+    border-radius: 0.3vw;
 }
 
 .calculator-buttons{
@@ -34,14 +35,15 @@ body{
 }
 
 td{
-    width: 7vw;
-    height: 7vw;
+    width: 15vw;
+    height: 15vw;
     text-align: center;
     background: #3b3939;
     color: #fff;
     font-weight: 700;
     font-size: 2.7vh;
     cursor: pointer;
+    border-radius: 0.3vw;
 
     /*--- Prevent Text Selection on Double Click ---*/
     -webkit-user-select: none; /* Safari */
@@ -49,6 +51,37 @@ td{
     user-select: none; /* Standard syntax */
 
     transition: background 0.2s;
+}
+
+td[data-number]{ background: #3b4763 }
+td[data-number]:hover{ background: #6f85b8 }
+td[data-night-reduction]{ background: #1c4870; }
+td[data-night-reduction]:hover{ background: #131e29; }
+
+@media screen and (min-width: 1000px){
+    .screen-display{
+        font-size: 6.2vh;
+        height: 10vh;
+    }
+
+    td{
+        width: 5vw;
+        height: 5vw;
+        font-size: 3.5vh;
+    }
+}
+
+@media screen and (max-height: 500px){
+    .screen-display{
+        font-size: 6.5vh;
+        height: 10vh;
+    }
+
+    td{
+        width: 8.5vw;
+        height: 8.5vw;
+        font-size: 4.5vh;
+    }
 }
 
 td:hover{
