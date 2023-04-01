@@ -1,6 +1,7 @@
 let previousNumber = ""
 let nextNumber = ""
 let operation = ""
+let revNightRed = false
 
 function appendNumber(number){
     if(operation === ""){
@@ -11,6 +12,8 @@ function appendNumber(number){
         if(nextNumber.includes(":") && number === ":") return
         nextNumber += number
     }
+
+    updateScreen()
 }
 
 function updateScreen(){
@@ -25,6 +28,8 @@ function chooseOperation(operator){
     if(operator && nextNumber) calculate()
 
     operation = operator
+
+    updateScreen()
 }
 
 function calculate(){
@@ -83,6 +88,8 @@ function calculate(){
     previousNumber = String(previousNumber)
     operation = ""
     nextNumber = ""
+
+    updateScreen()
 }
 
 function clearAll(){
@@ -93,11 +100,14 @@ function clearAll(){
 }
 
 function deleteDigit(){
-    if(!operation) return previousNumber = previousNumber.slice(0, -1)
+    let deleteDigit = false
+    if(!operation) {previousNumber = previousNumber.slice(0, -1); deleteDigit = true}
 
-    if(nextNumber) return nextNumber = nextNumber.slice(0, -1)
+    if(!deleteDigit && nextNumber) {nextNumber = nextNumber.slice(0, -1); deleteDigit = true}
 
-    if(operation) return operation = ""
+    if(!deleteDigit && operation) operation = ""
+
+    updateScreen()
 }
 
 function nightReduction(){
@@ -110,34 +120,52 @@ function nightReduction(){
         hourMinute = true
     }
 
-    value /= 0.875
+    if(revNightRed) value *= 0.875
+    else value /= 0.875
 
     if(hourMinute) value = `${Math.floor(value/60)}:${String(Math.floor(value%60)).padStart(2,"0")}`
     else value = `${Math.floor(value)}:${String(Math.floor(Number(value)%1*60)).padStart(2,"0")}`
 
-    return $screenDisplay.innerHTML = value
+    previousNumber = String(value)
+    operation = ""
+    nextNumber = ""
+
+    updateScreen()
+}
+
+function revertNightReduction(nightRedActive){
+    nightRedActive != 'false' ? revNightRed = false : revNightRed = true
+    $revertNightReductionButton.dataset.revertNightReduction = revNightRed
+
+    if(revNightRed) { $nightReductionButton.style.background = "#701c1c"; $revertNightReductionButton.style.background = "#8f3838" }
+    else { $nightReductionButton.style.background = "#1c4870"; $revertNightReductionButton.style.background = "#3b3939" }
 }
 
 // Getting HTML Elements and setting event listeners
-const $numberButtons = document.querySelectorAll("[data-number]")
-$numberButtons.forEach(btn => btn.addEventListener("click", () => {appendNumber(btn.dataset.number); updateScreen()}))
-
 const $screenDisplay = document.querySelector(".screen-display")
 
+const $numberButtons = document.querySelectorAll("[data-number]")
+$numberButtons.forEach(btn => btn.addEventListener("click", () => appendNumber(btn.dataset.number)))
+
 const $operatorButtons = document.querySelectorAll("[data-operator]")
-$operatorButtons.forEach(btn => btn.addEventListener("click", () => {chooseOperation(btn.dataset.operator); updateScreen()}))
+$operatorButtons.forEach(btn => btn.addEventListener("click", () => chooseOperation(btn.dataset.operator)))
 
 const $equalButton = document.querySelector("[data-equal]")
-$equalButton.addEventListener("click", () => {calculate(); updateScreen()})
+$equalButton.addEventListener("click", () => calculate())
+
+const $deleteButton = document.querySelector("[data-delete]")
+$deleteButton.addEventListener("click", () => deleteDigit())
 
 const $clearAllButton = document.querySelector("[data-clear-all]")
 $clearAllButton.addEventListener("click", () => clearAll())
 
-const $deleteButton = document.querySelector("[data-delete]")
-$deleteButton.addEventListener("click", () => {deleteDigit(); updateScreen()})
-
 const $nightReductionButton = document.querySelector("[data-night-reduction]")
 $nightReductionButton.addEventListener("click", () => nightReduction())
+
+const $revertNightReductionButton = document.querySelector("[data-revert-night-reduction]")
+$revertNightReductionButton.addEventListener("click", () => {
+    revertNightReduction($revertNightReductionButton.dataset.revertNightReduction)
+})
 
 // Setting event handlers for numbers on keyboard
 const keyNumbers = {}
@@ -158,7 +186,13 @@ const keyUtils = {
     Enter: () => {calculate()},
     NumpadEnter: () => {calculate()},
     Backspace: () => {deleteDigit()},
-    Delete: () => {clearAll()}
+    Delete: () => {clearAll()},
+    Tab: () => {revertNightReduction($revertNightReductionButton.dataset.revertNightReduction)},
+    KeyR: () => {nightReduction()},
+    NumpadComma: () => {appendNumber(".")},
+    NumpadDecimal: () => {appendNumber(".")},
+    Comma: () => {appendNumber(".")},
+    Period: () => {appendNumber(".")}
 }
 
 const keyCommmandUtils = {
@@ -172,9 +206,10 @@ document.addEventListener("keydown", function(event) {
     const keyCode = event.code
     const shiftKey = event.shiftKey
 
+    if(keyCode === 'Tab') event.preventDefault()
+
     if(key in keyNumbers) keyNumbers[key]()
     if(keyCode in keyOperators) keyOperators[keyCode]()
     if(keyCode in keyUtils) keyUtils[keyCode]()
     if(shiftKey && keyCode in keyCommmandUtils) keyCommmandUtils[keyCode]()
-    updateScreen()
 });
