@@ -22,31 +22,36 @@ function updateScreen(){
 }
 
 function chooseOperation(operator){
-    console.log(`Prev: ${previousNumber}`)
-    console.log(`Next: ${nextNumber}`)
     if(operator && nextNumber) calculate()
 
     operation = operator
-    console.log(`After P: ${previousNumber}`)
-    console.log(`After N: ${nextNumber}`)
 }
 
 function calculate(){
     let hourMinute = false
+    let hrMinByHrMin = false
+    let prevHrMin = false
+    let nextHrMin = false
+
     if(previousNumber.includes(":") || nextNumber.includes(":")) hourMinute = true
 
     if(hourMinute){
         if(previousNumber.includes(":")){
+            prevHrMin = true
             previousNumber = previousNumber.split(":")
             previousNumber = Number(previousNumber[0])*60 + Number(previousNumber[1])
-        }
+        } else previousNumber *= 60
 
         if(nextNumber.includes(":")){
+            nextHrMin = true
+            if(operation === 'x' || operation === '÷'){ hrMinByHrMin = true; hourMinute = false }
             nextNumber = nextNumber.split(":")
             nextNumber = Number(nextNumber[0])*60 + Number(nextNumber[1])
         } else{
             if(operation!== 'x' && operation!== '÷') nextNumber *= 60
         }
+
+        if(!prevHrMin && nextHrMin) { previousNumber /= 60; hrMinByHrMin = false; hourMinute = true }
     }
 
     previousNumber = Number(previousNumber)
@@ -70,11 +75,12 @@ function calculate(){
         break;
     }
 
-    if(hourMinute) previousNumber = `${Math.floor(previousNumber/60)}:${String(Math.floor(previousNumber%60)).padStart(2,"0")}`
-    else previousNumber = `${Math.floor(previousNumber)}:${String(Math.floor(Number(previousNumber)%1*60)).padStart(2,"0")}`
+    if(!hrMinByHrMin){
+        if(hourMinute) previousNumber = `${Math.floor(previousNumber/60)}:${String(Math.floor(previousNumber%60)).padStart(2,"0")}`
+        else previousNumber = `${Math.floor(previousNumber)}:${String(Math.floor(Number(previousNumber)%1*60)).padStart(2,"0")}`
+    } else previousNumber = Number(previousNumber).toFixed(2);
 
     previousNumber = String(previousNumber)
-
     operation = ""
     nextNumber = ""
 }
@@ -132,3 +138,43 @@ $deleteButton.addEventListener("click", () => {deleteDigit(); updateScreen()})
 
 const $nightReductionButton = document.querySelector("[data-night-reduction]")
 $nightReductionButton.addEventListener("click", () => nightReduction())
+
+// Setting event handlers for numbers on keyboard
+const keyNumbers = {}
+for(i = 0; i <= 9; i++){ const n = i; keyNumbers[i.toString()] = () => {appendNumber(n)} }
+
+// Setting event handlers for operations on keyboard
+const keyOperators = {
+    NumpadSubtract: () => {chooseOperation('-')},
+    Minus: () => {chooseOperation('-')},
+    IntlRo: () => {chooseOperation('÷')},
+    NumpadDivide: () => {chooseOperation('÷')},
+    NumpadMultiply: () => {chooseOperation('x')},
+    NumpadAdd: () => {chooseOperation('+')},
+}
+
+const keyUtils = {
+    Equal: () => {calculate()},
+    Enter: () => {calculate()},
+    NumpadEnter: () => {calculate()},
+    Backspace: () => {deleteDigit()},
+    Delete: () => {clearAll()}
+}
+
+const keyCommmandUtils = {
+    Digit8: () => {chooseOperation('x')},
+    Equal: () => {calculate()},
+    Slash: () => {appendNumber(":")}
+}
+
+document.addEventListener("keydown", function(event) {
+    const key = event.key
+    const keyCode = event.code
+    const shiftKey = event.shiftKey
+
+    if(key in keyNumbers) keyNumbers[key]()
+    if(keyCode in keyOperators) keyOperators[keyCode]()
+    if(keyCode in keyUtils) keyUtils[keyCode]()
+    if(shiftKey && keyCode in keyCommmandUtils) keyCommmandUtils[keyCode]()
+    updateScreen()
+});
