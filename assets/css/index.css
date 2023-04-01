@@ -34,6 +34,22 @@ body{
     border-spacing: 6px;
 }
 
+.utility-options{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.utility-options td{
+    width: 18vw;
+    height: 4vw;
+}
+
+.utility-options tr{
+    display: block;
+    margin: 2.25vw 0.5vw 2.25vw 0;
+}
+
 td{
     width: 15vw;
     height: 15vw;
@@ -55,8 +71,8 @@ td{
 
 td[data-number]{ background: #3b4763 }
 td[data-number]:hover{ background: #6f85b8 }
-td[data-night-reduction]{ background: #1c4870; }
-td[data-night-reduction]:hover{ background: #131e29; }
+td[data-night-reduction]{ background: #1c4870 }
+td[data-night-reduction]:hover{ background: #131e29 }
 
 @media screen and (min-width: 1000px){
     .screen-display{
