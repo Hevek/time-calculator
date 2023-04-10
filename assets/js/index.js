@@ -2,6 +2,11 @@ let previousNumber = ""
 let nextNumber = ""
 let operation = ""
 let revNightRed = false
+const history = {
+    history: [],
+    showResults: false,
+    showOperations: false
+}
 
 function appendNumber(number){
     if(operation === ""){
@@ -37,6 +42,7 @@ function calculate(){
     let hrMinByHrMin = false
     let prevHrMin = false
     let nextHrMin = false
+    history.history.push({value: `${previousNumber}${operation}${nextNumber}`, type: 'operation'})
 
     if(previousNumber.includes(":") || nextNumber.includes(":")) hourMinute = true
 
@@ -86,10 +92,12 @@ function calculate(){
     } else previousNumber = Number(previousNumber).toFixed(2);
 
     previousNumber = String(previousNumber)
+    history.history.push({value: `${previousNumber}`, type: 'result'})
     operation = ""
     nextNumber = ""
 
     updateScreen()
+    updateHistory()
 }
 
 function clearAll(){
@@ -133,12 +141,67 @@ function nightReduction(){
     updateScreen()
 }
 
-function revertNightReduction(nightRedActive){
+function revertNightReduction(){
+    let nightRedActive = $revertNightReductionButton.dataset.revertNightReduction
     nightRedActive != 'false' ? revNightRed = false : revNightRed = true
     $revertNightReductionButton.dataset.revertNightReduction = revNightRed
 
     if(revNightRed) { $nightReductionButton.style.background = "#701c1c"; $revertNightReductionButton.style.background = "#8f3838" }
     else { $nightReductionButton.style.background = "#1c4870"; $revertNightReductionButton.style.background = "#3b3939" }
+}
+
+function updateHistory(){
+    while ($historyList.rows.length > 2) {$historyList.deleteRow(2)}
+
+    if(!history.showOperations && !history.showResults) return
+
+    for (let i = history.history.length - 1; i >= 0; i--) {
+        if(!(history.showOperations && history.showResults)){
+            if(history.showResults) if(history.history[i].type !== 'result') continue
+            if(history.showOperations) if(history.history[i].type !== 'operation') continue
+        }
+
+        const originalIndex = history.history.length - 1 - i;
+        // Insert a new row at the end of the table
+        const newRow = $historyList.insertRow();
+
+        // Insert a new cell in the new row
+        const newCell = newRow.insertCell();
+
+        // Add content to the new cell
+        newCell.textContent = `${history.history[i].value}`;
+
+        // Add a custom attribute to the new row
+        newRow.setAttribute('data-history', `${originalIndex}`);
+    }    
+}
+
+function updateHistoryOptions(option){
+    if(option === 'operations'){
+        if($showHistoryOperations.dataset.showOperations === 'true'){
+            $showHistoryOperations.dataset.showOperations = 'false'
+            $showHistoryOperations.style.background = "#3b4763"
+            history.showOperations = false
+        } else{
+            $showHistoryOperations.dataset.showOperations = 'true'
+            $showHistoryOperations.style.background = "#0b4f8f"
+            history.showOperations = true
+        }
+
+        return updateHistory()
+    }
+
+    if($showHistoryResults.dataset.showResults === 'true'){
+        $showHistoryResults.dataset.showResults = 'false'
+        $showHistoryResults.style.background = "#3b4763"
+        history.showResults = false
+    } else{
+        $showHistoryResults.dataset.showResults = 'true'
+        $showHistoryResults.style.background = "#0b4f8f"
+        history.showResults = true
+    }
+
+    return updateHistory()
 }
 
 // Getting HTML Elements and setting event listeners
@@ -163,9 +226,15 @@ const $nightReductionButton = document.querySelector("[data-night-reduction]")
 $nightReductionButton.addEventListener("click", () => nightReduction())
 
 const $revertNightReductionButton = document.querySelector("[data-revert-night-reduction]")
-$revertNightReductionButton.addEventListener("click", () => {
-    revertNightReduction($revertNightReductionButton.dataset.revertNightReduction)
-})
+$revertNightReductionButton.addEventListener("click", () => { revertNightReduction() })
+
+const $historyList = document.querySelector(".history")
+
+const $showHistoryResults = document.querySelector("[data-show-results]")
+$showHistoryResults.addEventListener("click", ()=> { updateHistoryOptions('results') })
+
+const $showHistoryOperations = document.querySelector("[data-show-operations]")
+$showHistoryOperations.addEventListener("click", ()=> { updateHistoryOptions('operations') })
 
 // Setting event handlers for numbers on keyboard
 const keyNumbers = {}
@@ -187,7 +256,7 @@ const keyUtils = {
     NumpadEnter: () => {calculate()},
     Backspace: () => {deleteDigit()},
     Delete: () => {clearAll()},
-    Tab: () => {revertNightReduction($revertNightReductionButton.dataset.revertNightReduction)},
+    Tab: () => {revertNightReduction()},
     KeyR: () => {nightReduction()},
     NumpadComma: () => {appendNumber(".")},
     NumpadDecimal: () => {appendNumber(".")},
