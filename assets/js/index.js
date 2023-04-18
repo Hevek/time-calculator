@@ -10,11 +10,19 @@ const history = {
 
 function appendNumber(number){
     if(operation === ""){
-        if(previousNumber.includes(":") && number === ":") return
+        if(previousNumber.includes(":")){
+            let [, lengthOfSexa] = previousNumber.split(":");
+            if(lengthOfSexa.length === 2) return
+            if(number === ":") return
+        }
 
         previousNumber += number
     } else{
-        if(nextNumber.includes(":") && number === ":") return
+        if(nextNumber.includes(":")){
+            let [, lengthOfSexa] = nextNumber.split(":")
+            if(lengthOfSexa.length === 2) return
+            if(number === ":") return
+        }
         nextNumber += number
     }
 
@@ -30,6 +38,7 @@ function updateScreen(){
 }
 
 function chooseOperation(operator){
+    if(!previousNumber) return
     if(operator && nextNumber) calculate()
 
     operation = operator
@@ -61,8 +70,6 @@ function calculate(){
         } else{
             if(operation!== 'x' && operation!== '÷') nextNumber *= 60
         }
-
-        if(!prevHrMin && nextHrMin) { previousNumber /= 60; hrMinByHrMin = false; hourMinute = true }
     }
 
     previousNumber = Number(previousNumber)
@@ -76,6 +83,8 @@ function calculate(){
             previousNumber -= nextNumber
         break;
         case 'x':
+            if(!prevHrMin && nextHrMin) { previousNumber /= 60; hrMinByHrMin = false; hourMinute = true }
+
             previousNumber *= nextNumber
         break;
         case '÷':
@@ -87,8 +96,8 @@ function calculate(){
     }
 
     if(!hrMinByHrMin){
-        if(hourMinute) previousNumber = `${Math.floor(previousNumber/60)}:${String(Math.floor(previousNumber%60)).padStart(2,"0")}`
-        else previousNumber = `${Math.floor(previousNumber)}:${String(Math.floor(Number(previousNumber)%1*60)).padStart(2,"0")}`
+        if(hourMinute) previousNumber = `${Math.floor(previousNumber/60)}:${String(Math.abs(Math.floor(previousNumber%60))).padStart(2,"0")}`
+        else previousNumber = `${Math.floor(previousNumber)}:${String(Math.abs(Math.floor(Number(previousNumber)%1*60))).padStart(2,"0")}`
     } else previousNumber = Number(previousNumber).toFixed(2);
 
     previousNumber = String(previousNumber)
@@ -156,6 +165,7 @@ function updateHistory(){
     if(!history.showOperations && !history.showResults) return
 
     for (let i = history.history.length - 1; i >= 0; i--) {
+        // Filter history case only one of the options is true
         if(!(history.showOperations && history.showResults)){
             if(history.showResults) if(history.history[i].type !== 'result') continue
             if(history.showOperations) if(history.history[i].type !== 'operation') continue
@@ -266,7 +276,7 @@ const keyUtils = {
 
 const keyCommmandUtils = {
     Digit8: () => {chooseOperation('x')},
-    Equal: () => {calculate()},
+    Equal: () => {chooseOperation("+")},
     Slash: () => {appendNumber(":")}
 }
 
