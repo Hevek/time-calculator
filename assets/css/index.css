@@ -12,6 +12,8 @@ body{
     background: linear-gradient(to bottom, #2f343f, #0e265a);
 }
 
+.main-container{ position: relative }
+
 .calculator-container{
     background: #000;
     padding: 2.4vw 1.2vw 1.2vw;
@@ -35,7 +37,7 @@ body{
 }
 
 .utility-options{
-    display: flex;
+    display: none; /* flex */
     align-items: flex-start;
     justify-content: center;
 }
@@ -51,7 +53,7 @@ body{
 }
 
 .history{
-    display: flex;
+    display: none; /* flex */
     overflow-x: hidden;
     overflow-y: auto;
     height: 50vh;
@@ -70,12 +72,14 @@ body{
     margin: 0.25vw 0 0.25vw 0.5vw;
 }
 
-.history tr th{
+.history tr th, .utility-options tr th{
     display: flex;
     text-align: center;
     justify-content: center;
     align-items: center;
     color: white;
+    background-color: #133179;
+    border-radius: 1.5vh;
 }
 
 .history tr.history-options{
@@ -108,6 +112,36 @@ body{
     border-radius: 15vw;
 }
 
+.show-history{
+    font-size: 4.5vh;
+    color: white;
+    position: absolute;
+    right: -1.7vw;
+    top: 50%;
+    transform: translate(50%, -50%);
+    writing-mode: vertical-rl;
+    background-color: #133179;
+    border-radius: 1.5vh;
+}
+
+.show-history:hover{ cursor: pointer }
+.hide-history:hover{ cursor: pointer }
+
+.show-utility-options{
+    font-size: 4.5vh;
+    color: white;
+    position: absolute;
+    left: -4.3vw;
+    top: 50%;
+    transform: translate(50%, -50%) rotate(180deg);
+    writing-mode: vertical-rl;
+    background-color: #133179;
+    border-radius: 1.5vh;
+}
+
+.show-utility-options:hover{ cursor: pointer }
+.hide-utility-options:hover{ cursor: pointer }
+
 td{
     width: 15vw;
     height: 15vw;
@@ -131,6 +165,7 @@ td[data-number]{ background: #3b4763 }
 td[data-number]:hover{ background: #6f85b8 }
 td[data-night-reduction]{ background: #1c4870 }
 td[data-night-reduction]:hover{ background: #131e29 }
+td[data-revert-night-reduction]{ background: #1c4870 }
 
 @media screen and (min-width: 1000px){
     .screen-display{
@@ -160,4 +195,9 @@ td[data-night-reduction]:hover{ background: #131e29 }
 
 td:hover{
     background: rgba(255, 255, 255, 0.15);
+}
+
+.transition-flex{
+    display: flex;
+    transition: all 0.3s ease-out;
 }

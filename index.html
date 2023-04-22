@@ -6,56 +6,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="icon" href="assets/images/calculator-icon.svg" type="image/png">
     <script src="assets/js/index.js" defer></script>
     <title>Time Calculator</title>
 </head>
 <body>
     <table class="utility-options">
-        <tr><td data-revert-night-reduction="false">Revert Night Reduction</td></tr>
+        <tr class="hide-utility-options"><th><h2>Advanced Options -</h2></th></tr>
+        <tr><td data-revert-night-reduction="false">Rev. Night Red.</td></tr>
     </table>
-    <div class="calculator-container">
-        <span class="screen-display">0</span>
-
-        <table class="calculator-buttons">
-            <!-- First Row -->
-            <tr>
-                <td data-clear-all>C</td>
-                <td data-delete>&#60;</td>
-                <td data-operator="x">x</td>
-                <td data-operator="&#247;">&#247;</td>
-            </tr>
-            <!-- Second Row -->
-            <tr>
-                <td data-number="7">7</td>
-                <td data-number="8">8</td>
-                <td data-number="9">9</td>
-                <td data-operator="-">-</td>
-            </tr>
-            <!-- Third Row -->
-            <tr>
-                <td data-number="4">4</td>
-                <td data-number="5">5</td>
-                <td data-number="6">6</td>
-                <td data-operator="+">+</td>
-            </tr>
-            <!-- Fourth Row -->
-            <tr>
-                <td data-number="1">1</td>
-                <td data-number="2">2</td>
-                <td data-number="3">3</td>
-                <td data-night-reduction>Red.</td>
-            </tr>
-            <!-- Fifth Row -->
-            <tr>
-                <td data-number="0">0</td>
-                <td data-number=":">:</td>
-                <td data-number=".">.</td>
-                <td data-equal>=</td>
-            </tr>
-        </table>
+    <div class="main-container">
+        <div class="show-utility-options">
+            Advance Options +
+        </div>
+        <div class="show-history">
+            + History
+        </div>
+        <div class="calculator-container">
+            <span class="screen-display">0</span>
+    
+            <table class="calculator-buttons">
+                <!-- First Row -->
+                <tr>
+                    <td data-clear-all>C</td>
+                    <td data-delete>&#60;</td>
+                    <td data-operator="x">x</td>
+                    <td data-operator="&#247;">&#247;</td>
+                </tr>
+                <!-- Second Row -->
+                <tr>
+                    <td data-number="7">7</td>
+                    <td data-number="8">8</td>
+                    <td data-number="9">9</td>
+                    <td data-operator="-">-</td>
+                </tr>
+                <!-- Third Row -->
+                <tr>
+                    <td data-number="4">4</td>
+                    <td data-number="5">5</td>
+                    <td data-number="6">6</td>
+                    <td data-operator="+">+</td>
+                </tr>
+                <!-- Fourth Row -->
+                <tr>
+                    <td data-number="1">1</td>
+                    <td data-number="2">2</td>
+                    <td data-number="3">3</td>
+                    <td data-night-reduction>Red.</td>
+                </tr>
+                <!-- Fifth Row -->
+                <tr>
+                    <td data-number="0">0</td>
+                    <td data-number=":">:</td>
+                    <td data-number=".">.</td>
+                    <td data-equal>=</td>
+                </tr>
+            </table>
+        </div>
     </div>
     <table class="history">
-        <tr><th><h2>History</h2></th></tr>
+        <tr class="hide-history"><th><h2>History -</h2></th></tr>
         <tr class="history-options">
             <td data-show-results="false">Results</td>
             <td data-show-operations="false">Operations</td>

@@ -38,7 +38,10 @@ function updateScreen(){
 }
 
 function chooseOperation(operator){
-    if(!previousNumber) return
+    if(!previousNumber && operator!=='-') return
+
+    if(operation==='-' && previousNumber.includes('-')){ previousNumber += operator; return updateScreen() }
+
     if(operator && nextNumber) calculate()
 
     operation = operator
@@ -154,9 +157,6 @@ function revertNightReduction(){
     let nightRedActive = $revertNightReductionButton.dataset.revertNightReduction
     nightRedActive != 'false' ? revNightRed = false : revNightRed = true
     $revertNightReductionButton.dataset.revertNightReduction = revNightRed
-
-    if(revNightRed) { $nightReductionButton.style.background = "#701c1c"; $revertNightReductionButton.style.background = "#8f3838" }
-    else { $nightReductionButton.style.background = "#1c4870"; $revertNightReductionButton.style.background = "#3b3939" }
 }
 
 function updateHistory(){
@@ -236,15 +236,35 @@ const $nightReductionButton = document.querySelector("[data-night-reduction]")
 $nightReductionButton.addEventListener("click", () => nightReduction())
 
 const $revertNightReductionButton = document.querySelector("[data-revert-night-reduction]")
-$revertNightReductionButton.addEventListener("click", () => { revertNightReduction() })
+$revertNightReductionButton.addEventListener("click", () => {
+    revertNightReduction()
+    if(revNightRed) { $nightReductionButton.style.background = "#701c1c"; $revertNightReductionButton.style.background = "#701c1c" }
+    else { $nightReductionButton.style.background = "#1c4870"; $revertNightReductionButton.style.background = "#1c4870" }
+})
 
 const $historyList = document.querySelector(".history")
+
+const $history = document.querySelector(".history")
 
 const $showHistoryResults = document.querySelector("[data-show-results]")
 $showHistoryResults.addEventListener("click", ()=> { updateHistoryOptions('results') })
 
 const $showHistoryOperations = document.querySelector("[data-show-operations]")
 $showHistoryOperations.addEventListener("click", ()=> { updateHistoryOptions('operations') })
+
+const $showHistory = document.querySelector(".show-history")
+$showHistory.addEventListener("click", () => {$history.style.display = 'flex'; $showHistory.style.display = 'none'})
+
+const $hideHistory = document.querySelector(".hide-history")
+$hideHistory.addEventListener("click", () => {$history.style.display = 'none'; $showHistory.style.display = 'flex'})
+
+const $utilityOptions = document.querySelector(".utility-options")
+
+const $showUtilityOptions = document.querySelector(".show-utility-options")
+$showUtilityOptions.addEventListener("click", () => {$utilityOptions.style.display = 'flex'; $showUtilityOptions.style.display = 'none'})
+
+const $hideUtilityOptions = document.querySelector(".hide-utility-options")
+$hideUtilityOptions.addEventListener("click", () => {$utilityOptions.style.display = 'none'; $showUtilityOptions.style.display = 'flex'})
 
 // Setting event handlers for numbers on keyboard
 const keyNumbers = {}
