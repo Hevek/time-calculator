@@ -165,6 +165,9 @@ function updateHistory(){
     if(!history.showOperations && !history.showResults) return
 
     for (let i = history.history.length - 1; i >= 0; i--) {
+        // Skips if the index doesn't exist
+        if(!history.history[i]) continue;
+
         // Filter history case only one of the options is true
         if(!(history.showOperations && history.showResults)){
             if(history.showResults) if(history.history[i].type !== 'result') continue
@@ -179,7 +182,45 @@ function updateHistory(){
         const newCell = newRow.insertCell();
 
         // Add content to the new cell
-        newCell.textContent = `${history.history[i].value}`;
+        const textContent = document.createTextNode(`${history.history[i].value}`);
+
+        // Add icons to the new cell
+        const deleteSpan = document.createElement('span');
+        deleteSpan.classList.add('delete-icon');
+        deleteSpan.addEventListener('click', () => {
+            delete history.history[i]
+
+            // Create message element
+            const message = document.createElement('div');
+            message.textContent = 'Deleted!';
+            message.classList.add('delete-message');
+            
+            // Add message after icon
+            deleteSpan.after(message);
+
+            // Remove message after 0.75seg
+            setTimeout(() => { message.remove(); updateHistory() }, 500);
+        });
+
+        const copySpan = document.createElement('span');
+        copySpan.classList.add('copy-icon');
+        copySpan.addEventListener('click', () => {
+            navigator.clipboard.writeText(history.history[i].value)
+            // Create message element
+            const message = document.createElement('div');
+            message.textContent = 'Copied!';
+            message.classList.add('copy-message');
+            
+            // Add message after icon
+            copySpan.after(message);
+            
+            // Remove message after 0.75seg
+            setTimeout(() => { message.remove() }, 750);
+        });
+
+        newCell.appendChild(textContent);
+        newCell.appendChild(deleteSpan);
+        newCell.appendChild(copySpan);
 
         // Add a custom attribute to the new row
         newRow.setAttribute('data-history', `${originalIndex}`);
