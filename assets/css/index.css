@@ -143,6 +143,7 @@ body{
 .hide-utility-options:hover{ cursor: pointer }
 
 td{
+    position: relative;
     width: 15vw;
     height: 15vw;
     text-align: center;
@@ -197,7 +198,56 @@ td:hover{
     background: rgba(255, 255, 255, 0.15);
 }
 
-.transition-flex{
-    display: flex;
-    transition: all 0.3s ease-out;
+.delete-icon{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: url("../images/delete-dark.svg");
+    background-size: 25px 25px;
+    border-radius: 5px;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.copy-icon{
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-image: url("../images/copy.svg");
+    background-size: 25px 25px;
+    border-radius: 5px;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.copy-icon:hover{ background-color: #fff }
+
+.delete-icon:hover{
+    background-color: #b11515;
+    background-image: url("../images/delete-light.svg");
+}
+
+.copy-message{
+    color: black;
+    position: absolute;
+    font-size: 0.75em;
+    top: -30px;
+    right: 10%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.delete-message{
+    color: black;
+    position: absolute;
+    font-size: 0.75em;
+    top: -30px;
+    left: 10%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
 }
