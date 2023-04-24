@@ -257,6 +257,8 @@ function updateHistoryOptions(option){
 
 function sanitizePaste(input) {
     const regex = /[^1234567890*/+\-:÷x.]/g
+    input = input.replace("/", "÷")
+    input = input.replace("*", "x")
     return input.replace(regex, '')
 }
 
@@ -276,8 +278,12 @@ function copyScreenValue(){
 }
 
 function pasteScreenValue(){
+    const regex = /[1234567890*/+\-:÷x.]/g;
     navigator.clipboard.readText().then(text => {
-        $screenDisplay.innerHTML = sanitizePaste(text)
+        // Return if there's not a valid value
+        if(!text || !regex.test(text)) return
+        text = sanitizePaste(text)
+        $screenDisplay.innerHTML = text
 
         const operators = ['+', '-', 'x', '÷'];
 
@@ -302,7 +308,7 @@ function pasteScreenValue(){
 // Getting HTML Elements and setting event listeners
 const $screenDisplay = document.querySelector(".screen-display")
 $screenDisplay.addEventListener('click', () => copyScreenValue())
-$screenDisplay.addEventListener('contextmenu', (event) => { event.preventDefault(); if(event.button === 2) pasteScreenValue() })
+$screenDisplay.addEventListener('contextmenu', (e) => { e.preventDefault(); pasteScreenValue() })
 
 const $numberButtons = document.querySelectorAll("[data-number]")
 $numberButtons.forEach(btn => btn.addEventListener("click", () => appendNumber(btn.dataset.number)))
