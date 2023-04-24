@@ -292,6 +292,10 @@ function pasteScreenValue(){
 
         operation = operators.find(op => text.includes(op))
 
+        if(!previousNumber) previousNumber = ""
+        if(!operation) operation = ""
+        if(!nextNumber) nextNumber = ""
+
         // Create message element
         const message = document.createElement('div')
         message.textContent = 'Pasted!'
