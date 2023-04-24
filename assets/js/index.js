@@ -255,8 +255,60 @@ function updateHistoryOptions(option){
     return updateHistory()
 }
 
+function sanitizePaste(input) {
+    const regex = /[^1234567890*/+\-:÷x.]/g
+    input = input.replace("/", "÷")
+    input = input.replace("*", "x")
+    return input.replace(regex, '')
+}
+
+function copyScreenValue(){
+    navigator.clipboard.writeText($screenDisplay.innerHTML)
+
+    // Create message element
+    const message = document.createElement('div')
+    message.textContent = 'Copied!'
+    message.classList.add('copy-message-screen')
+    
+    // Add message after screen
+    $screenDisplay.after(message)
+    
+    // Remove message after 0.75seg
+    setTimeout(() => { message.remove() }, 750)
+}
+
+function pasteScreenValue(){
+    const regex = /[1234567890*/+\-:÷x.]/g;
+    navigator.clipboard.readText().then(text => {
+        // Return if there's not a valid value
+        if(!text || !regex.test(text)) return
+        text = sanitizePaste(text)
+        $screenDisplay.innerHTML = text
+
+        const operators = ['+', '-', 'x', '÷'];
+
+        // Split the expression using the operator
+        [previousNumber, nextNumber] = text.split(operators.find(op => text.includes(op)))
+
+        operation = operators.find(op => text.includes(op))
+
+        // Create message element
+        const message = document.createElement('div')
+        message.textContent = 'Pasted!'
+        message.classList.add('paste-message-screen')
+        
+        // Add message after screen
+        $screenDisplay.after(message)
+        
+        // Remove message after 0.75seg
+        setTimeout(() => { message.remove() }, 750)
+    })
+}
+
 // Getting HTML Elements and setting event listeners
 const $screenDisplay = document.querySelector(".screen-display")
+$screenDisplay.addEventListener('click', () => copyScreenValue())
+$screenDisplay.addEventListener('contextmenu', (e) => { e.preventDefault(); pasteScreenValue() })
 
 const $numberButtons = document.querySelectorAll("[data-number]")
 $numberButtons.forEach(btn => btn.addEventListener("click", () => appendNumber(btn.dataset.number)))
@@ -335,21 +387,28 @@ const keyUtils = {
     Period: () => {appendNumber(".")}
 }
 
-const keyCommmandUtils = {
+const keyShiftUtils = {
     Digit8: () => {chooseOperation('x')},
     Equal: () => {chooseOperation("+")},
     Slash: () => {appendNumber(":")}
+}
+
+const keyCtrlUtils = {
+    KeyC: () => {copyScreenValue()},
+    KeyV: () => {pasteScreenValue()},
 }
 
 document.addEventListener("keydown", function(event) {
     const key = event.key
     const keyCode = event.code
     const shiftKey = event.shiftKey
+    const controlKey = event.ctrlKey
 
     if(keyCode === 'Tab') event.preventDefault()
 
     if(key in keyNumbers) keyNumbers[key]()
     if(keyCode in keyOperators) keyOperators[keyCode]()
     if(keyCode in keyUtils) keyUtils[keyCode]()
-    if(shiftKey && keyCode in keyCommmandUtils) keyCommmandUtils[keyCode]()
+    if(shiftKey && keyCode in keyShiftUtils) keyShiftUtils[keyCode]()
+    if(controlKey && keyCode in keyCtrlUtils) keyCtrlUtils[keyCode]()
 });

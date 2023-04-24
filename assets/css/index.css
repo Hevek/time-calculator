@@ -30,6 +30,11 @@ body{
     margin: 0 0.5vw;
     padding-right: 6px;
     border-radius: 0.3vw;
+
+    /*--- Prevent Text Selection ---*/
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
 }
 
 .calculator-buttons{
@@ -229,7 +234,7 @@ td:hover{
     background-image: url("../images/delete-light.svg");
 }
 
-.copy-message{
+.copy-message, .copy-message-screen{
     color: black;
     position: absolute;
     font-size: 0.75em;
@@ -240,7 +245,7 @@ td:hover{
     border-radius: 5px;
 }
 
-.delete-message{
+.delete-message, .paste-message-screen{
     color: black;
     position: absolute;
     font-size: 0.75em;
@@ -250,4 +255,10 @@ td:hover{
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 5px;
+}
+
+.copy-message-screen, .paste-message-screen{
+    font-size: 1.2em;
+    padding-left: 1vw;
+    padding-right: 1vw;
 }
