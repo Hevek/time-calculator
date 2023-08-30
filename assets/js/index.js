@@ -7,6 +7,46 @@ const history = {
     showResults: false,
     showOperations: false
 }
+let chosenLanguage = 'en-us'
+const messages = {
+    paste_message: "Pasted!",
+    copy_message: "Copied!",
+    delete_message: "Deleted!"
+}
+
+function changeLanguage(selectedLanguage = null){
+    // Load the appropriate language file based on selected language or user's preferences
+    let language = selectedLanguage || navigator.language || navigator.userLanguage
+
+    const xhr = new XMLHttpRequest();
+
+    // Set the URL of the JSON file we want to fetch
+    const url = `assets/translations/${language.toLowerCase()}.json`
+
+    xhr.open('GET', url);
+
+    xhr.responseType = 'json';
+
+    xhr.onload = () => {
+        // Check if the request was successful
+        if (xhr.status !== 200) return console.log('Error loading JSON file, keeping language in default language (en-us).')
+
+        chosenLanguage = language.toLowerCase()
+        // Access the JSON data using the response property
+        const translations = xhr.response;
+
+        // Translate all labeled elements
+        let elements = document.querySelectorAll('[data-translate]')
+        for (let i = 0; i < elements.length; i++) {
+            let key = elements[i].getAttribute('data-translate')
+            elements[i].innerHTML = translations[key]
+        }
+    }
+
+    xhr.send()
+}
+
+changeLanguage()
 
 function appendNumber(number){
     if(operation === ""){

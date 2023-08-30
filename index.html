@@ -8,18 +8,18 @@
     <link rel="stylesheet" href="assets/css/index.css">
     <link rel="icon" href="assets/images/calculator-icon.svg" type="image/png">
     <script src="assets/js/index.js" defer></script>
-    <title>Time Calculator</title>
+    <title data-translate="title">Time Calculator</title>
 </head>
 <body>
     <table class="utility-options">
-        <tr class="hide-utility-options"><th><h2>Advanced Options -</h2></th></tr>
-        <tr><td data-revert-night-reduction="false">Rev. Night Red.</td></tr>
+        <tr class="hide-utility-options"><th><h2 data-translate="btn_hide_advanced_options">Advanced Options -</h2></th></tr>
+        <tr><td data-translate="btn_toggle_night_reduction" data-revert-night-reduction="false">Rev. Night Red.</td></tr>
     </table>
     <div class="main-container">
-        <div class="show-utility-options">
+        <div data-translate="btn_show_advanced_options" class="show-utility-options">
             Advance Options +
         </div>
-        <div class="show-history">
+        <div data-translate="btn_show_history" class="show-history">
             + History
         </div>
         <div class="calculator-container">
@@ -28,47 +28,47 @@
             <table class="calculator-buttons">
                 <!-- First Row -->
                 <tr>
-                    <td data-clear-all>C</td>
-                    <td data-delete>&#60;</td>
-                    <td data-operator="x">x</td>
-                    <td data-operator="&#247;">&#247;</td>
+                    <td data-translate="btn_clear" data-clear-all>C</td>
+                    <td data-translate="btn_delete" data-delete>&#60;</td>
+                    <td data-translate="btn_multiply" data-operator="x">x</td>
+                    <td data-translate="btn_divide" data-operator="&#247;">&#247;</td>
                 </tr>
                 <!-- Second Row -->
                 <tr>
-                    <td data-number="7">7</td>
-                    <td data-number="8">8</td>
-                    <td data-number="9">9</td>
-                    <td data-operator="-">-</td>
+                    <td data-translate="btn_seven" data-number="7">7</td>
+                    <td data-translate="btn_eight" data-number="8">8</td>
+                    <td data-translate="btn_nine" data-number="9">9</td>
+                    <td data-translate="btn_minus" data-operator="-">-</td>
                 </tr>
                 <!-- Third Row -->
                 <tr>
-                    <td data-number="4">4</td>
-                    <td data-number="5">5</td>
-                    <td data-number="6">6</td>
-                    <td data-operator="+">+</td>
+                    <td data-translate="btn_four" data-number="4">4</td>
+                    <td data-translate="btn_five" data-number="5">5</td>
+                    <td data-translate="btn_six" data-number="6">6</td>
+                    <td data-translate="btn_plus" data-operator="+">+</td>
                 </tr>
                 <!-- Fourth Row -->
                 <tr>
-                    <td data-number="1">1</td>
-                    <td data-number="2">2</td>
-                    <td data-number="3">3</td>
-                    <td data-night-reduction>Red.</td>
+                    <td data-translate="btn_one" data-number="1">1</td>
+                    <td data-translate="btn_two" data-number="2">2</td>
+                    <td data-translate="btn_three" data-number="3">3</td>
+                    <td data-translate="btn_night_reduction" data-night-reduction>Red.</td>
                 </tr>
                 <!-- Fifth Row -->
                 <tr>
-                    <td data-number="0">0</td>
-                    <td data-number=":">:</td>
-                    <td data-number=".">.</td>
-                    <td data-equal>=</td>
+                    <td data-translate="btn_zero" data-number="0">0</td>
+                    <td data-translate="btn_sexagesimal_separator" data-number=":">:</td>
+                    <td data-translate="btn_decimal_separator" data-number=".">.</td>
+                    <td data-translate="btn_equal" data-equal>=</td>
                 </tr>
             </table>
         </div>
     </div>
     <table class="history">
-        <tr class="hide-history"><th><h2>History -</h2></th></tr>
+        <tr class="hide-history"><th><h2 data-translate="btn_hide_history">History -</h2></th></tr>
         <tr class="history-options">
-            <td data-show-results="false">Results</td>
-            <td data-show-operations="false">Operations</td>
+            <td data-translate="history_results" data-show-results="false">Results</td>
+            <td data-translate="history_operations" data-show-operations="false">Operations</td>
         </tr>
     </table>
 </body>
